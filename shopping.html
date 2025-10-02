@@ -1,159 +1,233 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>WingO Shopping & Points</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>WinGo Shopping</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    body { background:#19181F; color:#fff; font-family:sans-serif; margin:0; }
-    .container { max-width:420px; margin:32px auto; background:#232136; border-radius:24px; box-shadow:0 3px 20px #0005; padding:28px 18px 34px 18px; }
-    h2 { color: #ffd900; text-align:center; margin-bottom:18px;}
-    label { display:block; margin-top:16px; color:#ffe080; font-weight:600;}
-    input, select { width:100%; padding:10px; margin-top:7px; margin-bottom:8px; border-radius:7px; border:none; font-size:1em;}
-    button { width:100%; padding:13px; background: #ffd900; color:#232221; border:none; border-radius:8px; font-weight:800; font-size:1.13em; cursor:pointer; transition:.18s;}
-    button:hover { background: #ffc300; }
-    .info, .success, .error { display:block; margin-top:14px; }
-    .info { color:#aad3fb;}
-    .success { color:#24db53;}
-    .error { color:#ed344d;}
-    .section { margin-bottom:24px; padding-bottom:14px; border-bottom:1px solid #2d293a; }
-    .section:last-child { border-bottom: none; }
+    body { background: #181628; color: #fff; font-family: sans-serif; margin: 0;}
+    .main { max-width:1000px; margin: 0 auto; padding-bottom:40px;}
+    header { background: #201f2b; padding: 14px 14px 6px 14px;}
+    .site-title { font-size:2em; color:#FFD900; font-weight:bold; margin:0;}
+    nav { margin:12px 0 0 0;}
+    nav button { background:none;border:none; color:#ffe57f; font-size:1.1em; padding:6px 18px; border-radius:3px; cursor:pointer;}
+    nav button.active { background:#FFD900; color:#181628; font-weight:700; }
+    .prod-grid { display:flex; flex-wrap:wrap; gap:23px 20px; margin-top:13px;}
+    .card { background:#282540; border-radius:10px; width:200px; box-shadow:0 2px 12px #0002; padding:17px 12px 16px 12px; box-sizing: border-box;}
+    .card img { display:block; margin:0 auto 7px auto; max-width:120px;max-height:70px;}
+    .prod-title {font-size:1.08em;font-weight:700;margin-bottom:7px;}
+    .prod-price { color:#FFD700;margin-bottom:8px;}
+    .card button {background:#FFD900;color:#232221; font-weight:700;padding:7px 13px;border:none;border-radius:6px;cursor:pointer;margin-top:5px;}
+    .card button:active {background:#ffe77a;}
+    .cart-box { background:#292541; color:#fff; position:fixed; right:24px; top:20px; z-index:100; border-radius:8px;padding:12px 16px;min-width:200px; box-shadow:0 6px 32px #0003;}
+    .cart-title {font-weight:700;font-size:1.11em;}
+    .cart-items { font-size:.98em; margin:9px 0;}
+    .checkout-btn { width:100%; background:#FFD900; color:#181628; padding:10px 8px; border:none; border-radius:5px;font-weight:900; font-size:1.08em;}
+    .checkout-btn:active, .card button:active {box-shadow:0 0 7px #FFD800;}
+    @media (max-width:600px){
+      .prod-grid{flex-direction:column;align-items:center;}
+      .card{width:98vw;max-width:360px;}
+      .main{padding:0;}
+      .cart-box{right:auto;left:10px;}
+    }
   </style>
 </head>
 <body>
-  <div class="container">
-
-    <h2>🛒 WingO Shopping & Points</h2>
-
-    <!-- User Info/Login/Register -->
-    <div class="section">
-      <form id="registerForm">
-        <label>Email
-          <input type="email" id="regEmail" required placeholder="Enter your email">
-        </label>
-        <label>Password
-          <input type="password" id="regPassword" required placeholder="Password">
-        </label>
-        <label>Agent Reference Code (optional)
-          <input type="text" id="regAgent" placeholder="Agent code (if any)">
-        </label>
-        <button type="submit">Register / Login</button>
-        <span id="regMsg"></span>
-      </form>
-    </div>
-
-    <!-- Buy Products Section -->
-    <div class="section">
-      <form id="productForm">
-        <label>Buy Product:
-          <select id="productSelect">
-            <option value="mobilecase">Mobile Case ₹149</option>
-            <option value="mug">Coffee Mug ₹249</option>
-            <option value="winpoints">WinGo Points (Custom)</option>
-          </select>
-        </label>
-        <div id="pointsSection" style="display:none;">
-          <label>Enter Points to Purchase
-            <input type="number" id="buyPoints" min="10" step="1" placeholder="100">
-          </label>
-        </div>
-        <button type="submit">Buy Now</button>
-        <span id="prodMsg"></span>
-      </form>
-    </div>
+  <header>
+    <h1 class="site-title">🛒 WinGo Shopping</h1>
+    <nav id="categories"></nav>
+  </header>
+  <div class="main">
+    <div id="products"></div>
   </div>
-
+  <div id="cartBox" class="cart-box" style="display:none;">
+    <div class="cart-title">🛒 Cart</div>
+    <div class="cart-items" id="cartItems"></div>
+    <div><b>Total: ₹<span id="cartTotal">0</span></b></div>
+    <button class="checkout-btn" onclick="checkout()">Checkout</button>
+    <button style="margin-top:4px;font-size:.92em;" onclick="clearCart()">Clear Cart</button>
+    <div id="cartMsg"></div>
+  </div>
   <script>
-    // === CONFIG ===
-    const gameApiUrl = "https://wingo-backend-nqk5.onrender.com"; // Change if needed
-    // ENDPOINTS (adjust as needed for your product backend)
-    // /api/users/register      (POST: {email, password, agentCode})
-    // /api/users/wallet/recharge (POST: {amount})
-
-    let token = localStorage.getItem('token') || null;
-
-    // Registration/Login
-    document.getElementById("registerForm").onsubmit = async function(e) {
-      e.preventDefault();
-      const regMsg = document.getElementById("regMsg");
-      regMsg.textContent = "Processing...";
-      regMsg.className = "info";
-      try {
-        const res = await fetch(gameApiUrl + "/api/users/register", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            email: document.getElementById("regEmail").value,
-            password: document.getElementById("regPassword").value,
-            agentCode: document.getElementById("regAgent").value || undefined
-          })
-        });
-        const data = await res.json();
-        if (res.ok && data.token) {
-          regMsg.textContent = "Login/Registration successful!";
-          regMsg.className = "success";
-          token = data.token;
-          localStorage.setItem('token', token);
-        } else {
-          regMsg.textContent = data.message || "Registration failed!";
-          regMsg.className = "error";
-        }
-      } catch(err) {
-        regMsg.textContent = "Registration error!";
-        regMsg.className = "error";
-      }
+    // === DEMO DATA ===
+    const CATEGORIES = [
+      { name:"Electronics", id:"electronics" },
+      { name:"Fashion", id:"fashion" },
+      { name:"Toys", id:"toys" },
+      { name:"Home", id:"home" },
+      { name:"WinGo Points", id:"points" }
+    ];
+    const PRODUCTS = {
+      electronics: [
+        { id:"e1", title:"Earphones", price:399, img:"https://cdn.pixabay.com/photo/2016/03/31/19/32/auriculares-1294463_1280.png" },
+        { id:"e2", title:"Smartwatch", price:1699, img:"https://cdn.pixabay.com/photo/2017/01/13/12/39/wrist-watch-1972996_1280.png" },
+        { id:"e3", title:"Bluetooth Speaker", price:750, img:"https://cdn.pixabay.com/photo/2013/07/12/17/00/apple-153026_1280.png" },
+        { id:"e4", title:"Powerbank", price:900, img:"https://cdn.pixabay.com/photo/2012/04/13/00/22/battery-31502_1280.png" }
+      ],
+      fashion: [
+        { id:"f1", title:"T-shirt", price:299, img:"https://cdn.pixabay.com/photo/2016/03/31/19/03/t-shirt-1294747_1280.png" },
+        { id:"f2", title:"Sneakers", price:999, img:"https://cdn.pixabay.com/photo/2014/12/21/23/40/shoes-578766_1280.png" },
+        { id:"f3", title:"Wallet", price:399, img:"https://cdn.pixabay.com/photo/2018/02/21/15/06/leather-3170784_1280.png" },
+        { id:"f4", title:"Sunglasses", price:699, img:"https://cdn.pixabay.com/photo/2017/01/13/12/11/icon-1970472_1280.png" }
+      ],
+      toys: [
+        { id:"t1", title:"Toy Car", price:129, img:"https://cdn.pixabay.com/photo/2014/04/02/16/16/car-308264_1280.png" },
+        { id:"t2", title:"Building Blocks", price:179, img:"https://cdn.pixabay.com/photo/2013/07/12/16/44/lego-151645_1280.png" },
+        { id:"t3", title:"Soft Teddy", price:249, img:"https://cdn.pixabay.com/photo/2016/03/31/19/07/teddy-bear-1294475_1280.png" },
+        { id:"t4", title:"Puzzle Set", price:119, img:"https://cdn.pixabay.com/photo/2013/07/12/12/58/puzzle-146067_1280.png" }
+      ],
+      home: [
+        { id:"h1", title:"Table Lamp", price:329, img:"https://cdn.pixabay.com/photo/2013/07/12/19/26/table-lamp-154006_1280.png" },
+        { id:"h2", title:"Wall Clock", price:249, img:"https://cdn.pixabay.com/photo/2012/04/10/23/09/clock-26226_1280.png" },
+        { id:"h3", title:"Water Bottle", price:119, img:"https://cdn.pixabay.com/photo/2016/03/31/18/48/bottle-1294740_1280.png" },
+        { id:"h4", title:"Planter", price:180, img:"https://cdn.pixabay.com/photo/2016/03/31/18/51/pot-1294745_1280.png" }
+      ],
+      points: [
+        { id:"p1", title:"WinGo Points (Custom quantity)", price:1, img:"https://cdn.pixabay.com/photo/2017/06/02/16/24/coins-2365680_1280.png", isPoints:true }
+      ]
     };
 
-    // Show/hide points input if "WinGo Points" selected
-    document.getElementById('productSelect').addEventListener('change', function() {
-      const show = this.value === 'winpoints';
-      document.getElementById('pointsSection').style.display = show ? '' : 'none';
-    });
+    let currentCat = CATEGORIES[0].id;
+    let cart = [];
 
-    // Product Purchase Handler
-    document.getElementById("productForm").onsubmit = async function(e) {
-      e.preventDefault();
-      const prodMsg = document.getElementById("prodMsg");
-      prodMsg.textContent = "Placing order...";
-      prodMsg.className = "info";
-      if (!token) {
-        prodMsg.textContent = "Please register/login first.";
-        prodMsg.className = "error";
-        return;
-      }
-      const product = document.getElementById('productSelect').value;
-      if (product === "winpoints") {
-        const points = parseInt(document.getElementById("buyPoints").value, 10) || 0;
-        if (points < 1) {
-          prodMsg.textContent = "Please enter minimum 1 point.";
-          prodMsg.className = "error";
-          return;
+    // === CATEGORY NAV ===
+    function renderCategories(){
+      const nav = document.getElementById('categories');
+      nav.innerHTML = "";
+      CATEGORIES.forEach(cat=>{
+        const btn = document.createElement('button');
+        btn.textContent = cat.name;
+        btn.className = cat.id===currentCat ? "active":"";
+        btn.onclick = ()=>{currentCat=cat.id;renderProducts();};
+        nav.appendChild(btn);
+      });
+    }
+
+    // === PRODUCTS GRID ===
+    function renderProducts(){
+      const gridDiv = document.getElementById('products');
+      gridDiv.innerHTML = `<div class="prod-grid" id="prodGrid"></div>`;
+      const prodGrid = document.getElementById("prodGrid");
+      PRODUCTS[currentCat].forEach(prod=>{
+        const d = document.createElement("div");
+        d.className = "card";
+        d.innerHTML = `<img src="${prod.img}" alt="">
+          <div class="prod-title">${prod.title}</div>
+          <div class="prod-price">
+            ${prod.isPoints? '' : '₹'}${prod.isPoints?'':prod.price} 
+            ${prod.isPoints?'Per Point' : ''}
+          </div>
+          ${prod.isPoints?`
+            <input type="number" id="pointsQty" min="1" value="100" style="width:100%;padding:7px;margin-top:7px;margin-bottom:4px;">
+            <button onclick="addPointsToCart('${prod.id}')">Add to Cart</button>
+          `:`
+            <button onclick="addToCart('${prod.id}')">Add to Cart</button>
+          `}
+        `;
+        prodGrid.appendChild(d);
+      });
+    }
+
+    // === CART ===
+    function showCart(){
+      document.getElementById('cartBox').style.display = "block";
+      renderCart();
+    }
+    function hideCart(){
+      document.getElementById('cartBox').style.display = "none";
+    }
+    function addToCart(prodId){
+      const prod = [].concat(...Object.values(PRODUCTS)).find(p=>p.id===prodId);
+      const idx = cart.findIndex(c=>c.id===prodId);
+      if(idx>-1) cart[idx].qty++;
+      else cart.push({...prod, qty:1});
+      showCart();
+    }
+    function addPointsToCart(prodId){
+      const qty = parseInt(document.getElementById('pointsQty').value,10);
+      if(isNaN(qty)||qty<1) return alert('Please enter valid points!');
+      const prod = PRODUCTS.points[0];
+      const idx = cart.findIndex(c=>c.id===prodId);
+      if(idx>-1) cart[idx].qty+=qty;
+      else cart.push({...prod, qty});
+      showCart();
+    }
+    function clearCart(){
+      cart=[];renderCart();hideCart();
+    }
+    function renderCart(){
+      const itemsDiv = document.getElementById('cartItems');
+      const totalSpan = document.getElementById('cartTotal');
+      itemsDiv.innerHTML = '';
+      let total = 0;
+      cart.forEach(item=>{
+        let line = "";
+        if(item.isPoints){
+          line = `<div>Points: <b>${item.qty}</b> x 1 = <b>${item.qty}</b></div>`;
+          total += item.qty;
+        }else{
+          line = `<div>${item.title} <b>x${item.qty}</b> = ₹${item.price*item.qty}</div>`;
+          total += item.price*item.qty;
         }
-        // Call backend to recharge wallet
-        try {
-          const res = await fetch(gameApiUrl + "/api/users/wallet/recharge", {
-            method: "POST",
-            headers: { "Authorization": "Bearer "+token, "Content-Type": "application/json" },
-            body: JSON.stringify({ amount: points })
-          });
-          const data = await res.json();
-          if (res.ok) {
-            prodMsg.textContent = `Order Success! ${points} points added to your game wallet.`;
-            prodMsg.className = "success";
-          } else {
-            prodMsg.textContent = data.message || "Points order failed!";
-            prodMsg.className = "error";
+        itemsDiv.innerHTML += line;
+      });
+      totalSpan.textContent = total;
+    }
+
+    // === CHECKOUT ===
+    function checkout(){
+      const cartMsg = document.getElementById('cartMsg');
+      if(cart.length===0){cartMsg.textContent='Cart is empty.';cartMsg.className="error";return;}
+      // Simulate checkout for non-points
+      let userToken = localStorage.getItem('token');
+      if(!userToken){
+        cartMsg.textContent = "Please log in on user site before checkout.";
+        cartMsg.className = "error"; return;
+      }
+      // If buying points, call game API instantly (simulate, demo call)
+      const pointsItem = cart.find(i=>i.isPoints);
+      if(pointsItem){
+        fetch("https://wingo-backend-nqk5.onrender.com/api/users/wallet/recharge",{
+          method:"POST",
+          headers:{ "Authorization":"Bearer "+userToken, "Content-Type":"application/json" },
+          body: JSON.stringify({ amount: pointsItem.qty })
+        }).then(r=>r.json()).then(data=>{
+          if(data && !data.message){
+            cartMsg.textContent = "Order Success & Points Added!";
+            cartMsg.className = "success";
+            cart = cart.filter(i=>!i.isPoints);
+            renderCart();
+          }else{
+            cartMsg.textContent = data.message || "API failure for points!";
+            cartMsg.className = "error";
           }
-        } catch (err) {
-          prodMsg.textContent = "Order error!";
-          prodMsg.className = "error";
-        }
-      } else {
-        // Simulate normal product order (like mobile case/mug)
-        prodMsg.textContent = "Order placed for product (" + product + "). You will be contacted for delivery!";
-        prodMsg.className = "success";
+        }).catch(e=>{
+          cartMsg.textContent = "Error reaching API!";
+          cartMsg.className = "error";
+        });
       }
+      // Success for other product orders (demo only)
+      if(cart.find(i=>!i.isPoints)){
+        cartMsg.textContent = "Order placed for " + cart.filter(i=>!i.isPoints).length + " product(s)!";
+        cartMsg.className = "success";
+        cart = cart.filter(i=>i.isPoints);
+        renderCart();
+      }
+    }
+
+    // INITIAL RENDER
+    renderCategories();renderProducts();
+
+    // Show cart icon always unless empty
+    document.body.onclick = function(e){
+      if(e.target.className.includes("cart-box")) return;
+      if(e.target.closest && e.target.closest(".cart-box")) return;
+      if(e.target.tagName==="BUTTON" && e.target.textContent.includes("Cart")) showCart();
+      else if(e.target.className==="cart-title") showCart();
+      else /* hideCart(); */
+      return;
     };
+    // Floating cart preview
+    renderCart();
   </script>
 </body>
 </html>
