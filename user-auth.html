@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Login / Register</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { background: #181628; color: #fff; font-family: sans-serif; }
+    .container { max-width:350px; margin:60px auto; background:#292442; border-radius:18px; box-shadow:0 8px 36px #0003; padding:32px 24px; }
+    h2 { text-align:center; color: #FFDF00;}
+    label { margin-top:16px; display:block;}
+    input { width:100%; padding:10px; margin-top:7px; border-radius:7px; border:none; font-size:1.1em}
+    button { width:100%; margin-top:15px; padding:12px; font-size:1.1em; font-weight:700;
+             background: #FFD900; color:#171717; border:none; border-radius:8px; cursor:pointer; }
+    span.msg { display: block; margin-top:14px;}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Login / Register</h2>
+    <form id="authForm">
+      <label>Email <input type="email" id="email" required /></label>
+      <label>Password <input type="password" id="password" required /></label>
+      <label>Agent Code (optional) <input type="text" id="agentCode" /></label>
+      <button type="submit">Login / Register</button>
+      <span id="authMsg" class="msg"></span>
+    </form>
+  </div>
+  <script>
+    const apiUrl = "https://wingo-backend-nqk5.onrender.com";
+    document.getElementById("authForm").onsubmit = async function(e){
+      e.preventDefault();
+      const msg = document.getElementById("authMsg");
+      msg.textContent = "Processing...";
+      try {
+        const res = await fetch(apiUrl+"/api/users/register", {
+          method:"POST",
+          headers:{"Content-Type":"application/json"},
+          body: JSON.stringify({
+            email: document.getElementById("email").value,
+            password: document.getElementById("password").value,
+            agentCode: document.getElementById("agentCode").value || undefined
+          })
+        });
+        const data = await res.json();
+        if(res.ok && data.token){
+          msg.textContent = "Login/Registration successful!";
+          localStorage.setItem('token', data.token);
+          setTimeout(()=>{ window.location.href = "user-panel.html"; }, 1000);
+        } else {
+          msg.textContent = data.message || "Registration/Login failed!"
+        }
+      } catch(err){ msg.textContent = "Error! "+err.message; }
+    }
+  </script>
+</body>
+</html>
