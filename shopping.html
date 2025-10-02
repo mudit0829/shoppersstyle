@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>WingO Shopping Recharge</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { background: #19181F; color: #fff; font-family: sans-serif; padding: 0; margin: 0; }
+    .container { max-width: 420px; margin:40px auto 0 auto; background: #232134; padding: 25px 16px 32px 16px; border-radius: 24px; box-shadow:0 3px 20px #0005;}
+    h2 { text-align: center; color: #ffd900; margin-bottom:18px;}
+    label { display:block; margin-top:16px; color:#ffe080; font-weight:600;}
+    input, select { width:100%; padding:10px; margin-top:7px; margin-bottom:8px; border-radius:7px; border:none; font-size:1em;}
+    button { width:100%; padding:13px; background: #ffd900; color:#212020; border:none; border-radius:8px; font-weight:800; font-size:1.2em; cursor:pointer; transition:.18s;}
+    button:hover { background: #ffc300; }
+    .info { font-size:.99em; color:#cbd3fd; margin-bottom:5px;}
+    .success { color:#31dd68; margin-top:10px;}
+    .error { color:#eb3a3a; margin-top:10px;}
+    .section-title { color:#ffe08a; font-size:1.06em; margin-top:25px; margin-bottom:7px;}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>💳 WinGo Points Recharge & Redeem</h2>
+
+    <!-- Registration -->
+    <div class="section-title">User Registration</div>
+    <form id="registerForm">
+      <label>Email
+        <input type="email" id="regEmail" required placeholder="Enter your email">
+      </label>
+      <label>Password
+        <input type="password" id="regPassword" required placeholder="Create password">
+      </label>
+      <label>Agent Reference Code <span style="font-size:.96em;color:#ccc">(optional)</span>
+        <input type="text" id="regAgent" placeholder="Agent code (if any)">
+      </label>
+      <button type="submit">Register & Login</button>
+      <div id="regMsg"></div>
+    </form>
+
+    <!-- Recharge Points -->
+    <div style="border-top:1px solid #282626;margin:24px 0 14px 0;"></div>
+    <div class="section-title">Recharge Your Game Points</div>
+    <form id="rechargeForm">
+      <label>Recharge Points
+        <input type="number" id="rechargeAmount" min="10" step="1" required placeholder="Enter points (min 10)">
+      </label>
+      <button type="submit">Recharge & Update Game Points</button>
+      <div id="rechargeMsg"></div>
+    </form>
+
+    <!-- Redeem Points -->
+    <div style="border-top:1px solid #282626;margin:24px 0 14px 0;"></div>
+    <div class="section-title">Redeem Game Points to Shopping Wallet</div>
+    <form id="redeemForm">
+      <label>Redeem Points
+        <input type="number" id="redeemAmount" min="1" step="1" required placeholder="Redeem from game to shopping">
+      </label>
+      <button type="submit">Redeem Points</button>
+      <div id="redeemMsg"></div>
+    </form>
+  </div>
+
+  <!-- DEMO ONLY, update URLs/logic for your game/shopping backend API -->
+  <script>
+    const apiUrl = "https://wingo-backend-nqk5.onrender.com"; // Your GAME backend
+    const shopApiUrl = "https://your-shopping-backend.com";    // Replace with your shopping API
+
+    // Registration (to Game backend)
+    document.getElementById("registerForm").onsubmit = async function(e) {
+      e.preventDefault();
+      const regMsg = document.getElementById("regMsg");
+      regMsg.textContent = "Registering...";
+      regMsg.className = "info";
+      try {
+        const result = await fetch(apiUrl + "/api/users/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: document.getElementById("regEmail").value,
+            password: document.getElementById("regPassword").value,
+            agentCode: document.getElementById("regAgent").value || undefined
+          })
+        });
+        const data = await result.json();
+        if (result.ok) {
+          regMsg.textContent = "Registration successful! Logging in...";
+          regMsg.className = "success";
+          localStorage.setItem('token', data.token);
+        } else {
+          regMsg.textContent = data.message || "Registration failed!";
+          regMsg.className = "error";
+        }
+      } catch (err) {
+        regMsg.textContent = "Error: " + err.message;
+        regMsg.className = "error";
+      }
+    };
+
+    // Recharge: Add points to game wallet
+    document.getElementById("rechargeForm").onsubmit = async function(e) {
+      e.preventDefault();
+      const rechargeMsg = document.getElementById("rechargeMsg");
+      rechargeMsg.textContent = "Processing...";
+      rechargeMsg.className = "info";
+      const token = localStorage.getItem('token');
+      if (!token) {
+        rechargeMsg.textContent = "Please register/login first!";
+        rechargeMsg.className = "error";
+        return;
+      }
+      try {
+        const result = await fetch(apiUrl + '/api/users/wallet/recharge', {
+          method: "POST",
+          headers: {
+            "Authorization": "Bearer " + token,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            amount: Number(document.getElementById("rechargeAmount").value)
+          })
+        });
+        const data = await result.json();
+        if (result.ok) {
+          rechargeMsg.textContent = "Points recharged and updated in game!";
+          rechargeMsg.className = "success";
+        } else {
+          rechargeMsg.textContent = data.message || "Recharge failed!";
+          rechargeMsg.className = "error";
+        }
+      } catch (err) {
+        rechargeMsg.textContent = "Error: " + err.message;
+        rechargeMsg.className = "error";
+      }
+    };
+
+    // Redeem: Move points from game to shopping wallet
+    document.getElementById("redeemForm").onsubmit = async function(e) {
+      e.preventDefault();
+      const redeemMsg = document.getElementById("redeemMsg");
+      redeemMsg.textContent = "Processing redeem...";
+      redeemMsg.className = "info";
+      const token = localStorage.getItem('token');
+      if (!token) {
+        redeemMsg.textContent = "Please register/login first!";
+        redeemMsg.className = "error";
+        return;
+      }
+      try {
+        // 1. Redeem in game (deduct from game wallet)
+        const gameRes = await fetch(apiUrl + '/api/users/wallet/redeem', {
+          method: "POST",
+          headers: {
+            "Authorization": "Bearer " + token,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            amount: Number(document.getElementById("redeemAmount").value)
+          })
+        });
+        const gameData = await gameRes.json();
+        if (!gameRes.ok) {
+          redeemMsg.textContent = gameData.message || "Redeem failed in game!";
+          redeemMsg.className = "error";
+          return;
+        }
+
+        // 2. Add to shopping wallet (simulate or call your shopping backend API)
+        // Uncomment and update below with your shopping wallet API as needed.
+        /*
+        await fetch(shopApiUrl + '/api/shopping/wallet/add', {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify({ email: ..., amount: ..., /* ...other fields })
+        });
+        */
+
+        redeemMsg.textContent = "Redeem successful! Points moved to shopping wallet.";
+        redeemMsg.className = "success";
+      } catch (err) {
+        redeemMsg.textContent = "Error: " + err.message;
+        redeemMsg.className = "error";
+      }
+    };
+  </script>
+</body>
+</html>
