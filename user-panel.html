@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>User Panel</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body{background:#161518;color:#fff;font-family:sans-serif;padding:0;}
+    .container{max-width:400px;margin:38px auto;background:#232037;border-radius:16px;box-shadow:0 6px 30px #0004;padding:24px;}
+    h2{text-align:center;color:#FFDF00;margin:0 0 20px 0;}
+    .logout{margin-top:10px;color:#B33;font-weight:700;cursor:pointer;}
+    table{width:100%;margin-top:12px;font-size:.96em;}
+    th,td{padding:7px;text-align:center;}
+    th{background:#2d2c46;}
+    tr:nth-child(even){background:#22203b;}
+    .welcome{margin-bottom:12px;}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>User Panel</h2>
+    <div class="welcome" id="welcomeUser"></div>
+    <b>Your Orders / Point history:</b>
+    <table id="history"><tr><th>Date</th><th>Product/Points</th><th>Amount</th></tr></table>
+    <button class="logout" onclick="logout()">Log Out</button>
+  </div>
+  <script>
+    const apiUrl = "https://wingo-backend-nqk5.onrender.com";
+    const token = localStorage.getItem('token');
+    if(!token){ window.location.href="user-auth.html"; }
+    function logout(){
+      localStorage.clear(); window.location.href="user-auth.html";
+    }
+    // Fetch order and point history
+    async function loadData(){
+      // Fetch profile
+      const resU = await fetch(apiUrl+"/api/users/profile", {headers:{Authorization:"Bearer "+token}});
+      const profile = await resU.json();
+      document.getElementById("welcomeUser").textContent = "Welcome, "+(profile.email || "user")+"!";
+      // Fetch orders/points - adjust endpoint as needed
+      const res = await fetch(apiUrl+"/api/users/orders", {headers:{Authorization:"Bearer "+token}});
+      const data = await res.json();
+      const tbl = document.getElementById('history');
+      (data.orders||[]).forEach(row=>{
+        tbl.innerHTML+=`<tr><td>${new Date(row.date||row.createdAt||"").toLocaleString()}</td><td>${row.product||'-'}</td><td>${row.amount||row.points||'-'}</td></tr>`;
+      });
+    }
+    loadData();
+  </script>
+</body>
+</html>
