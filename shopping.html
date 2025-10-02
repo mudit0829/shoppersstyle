@@ -1,233 +1,199 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>WinGo Shopping</title>
+  <title>WinGo Mall</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
-    body { background: #181628; color: #fff; font-family: sans-serif; margin: 0;}
-    .main { max-width:1000px; margin: 0 auto; padding-bottom:40px;}
-    header { background: #201f2b; padding: 14px 14px 6px 14px;}
-    .site-title { font-size:2em; color:#FFD900; font-weight:bold; margin:0;}
-    nav { margin:12px 0 0 0;}
-    nav button { background:none;border:none; color:#ffe57f; font-size:1.1em; padding:6px 18px; border-radius:3px; cursor:pointer;}
-    nav button.active { background:#FFD900; color:#181628; font-weight:700; }
-    .prod-grid { display:flex; flex-wrap:wrap; gap:23px 20px; margin-top:13px;}
-    .card { background:#282540; border-radius:10px; width:200px; box-shadow:0 2px 12px #0002; padding:17px 12px 16px 12px; box-sizing: border-box;}
-    .card img { display:block; margin:0 auto 7px auto; max-width:120px;max-height:70px;}
-    .prod-title {font-size:1.08em;font-weight:700;margin-bottom:7px;}
-    .prod-price { color:#FFD700;margin-bottom:8px;}
-    .card button {background:#FFD900;color:#232221; font-weight:700;padding:7px 13px;border:none;border-radius:6px;cursor:pointer;margin-top:5px;}
-    .card button:active {background:#ffe77a;}
-    .cart-box { background:#292541; color:#fff; position:fixed; right:24px; top:20px; z-index:100; border-radius:8px;padding:12px 16px;min-width:200px; box-shadow:0 6px 32px #0003;}
-    .cart-title {font-weight:700;font-size:1.11em;}
-    .cart-items { font-size:.98em; margin:9px 0;}
-    .checkout-btn { width:100%; background:#FFD900; color:#181628; padding:10px 8px; border:none; border-radius:5px;font-weight:900; font-size:1.08em;}
-    .checkout-btn:active, .card button:active {box-shadow:0 0 7px #FFD800;}
-    @media (max-width:600px){
-      .prod-grid{flex-direction:column;align-items:center;}
-      .card{width:98vw;max-width:360px;}
-      .main{padding:0;}
-      .cart-box{right:auto;left:10px;}
+    body {margin:0;background:#f6f7fb;font-family:'Inter',sans-serif;}
+    header {background:#232f3e;color:#ffdd00;padding:18px 18px 10px 18px;box-shadow:0 2px 8px #0002;}
+    .brand {font-size:2em;font-weight:800;letter-spacing:.5px;}
+    nav {margin-top:9px;}
+    nav button {background:transparent;border:none;color:#ffe27d;font-weight:600;font-size:1.07em;padding:7px 20px 7px 0;cursor:pointer;}
+    nav button.active {color:#232f3e;background:#ffec90;border-radius:0 9px 9px 0;font-weight:800;}
+    .main {padding:27px 0 0 0;}
+    .product-cat {margin:0 auto 18px auto;max-width:1050px;}
+    h2 {font-size:1.38em;color:#222d3e; margin-left:16px; margin-bottom:17px;}
+    .grid {display:flex;flex-wrap:wrap;gap:18px;justify-content:flex-start;}
+    .p-card {
+      background:#fff;
+      border-radius:13px;
+      min-width:200px;max-width:210px;
+      box-shadow:0 2px 18px #0001, 0 1.5px 8px #fff2;
+      padding:15px 14px;
+      display:flex;flex-direction:column;align-items:center;
+      position:relative;transition:box-shadow .22s;
+    }
+    .p-card:hover {box-shadow:0 5px 32px #ffefac55;}
+    .p-card img {width:125px;height:105px;object-fit:contain;}
+    .p-title {font-weight:600;margin-top:9px;font-size:1.08em;}
+    .p-price { color:#ffa600; font-weight:700; margin:12px 0 6px 0;}
+    .p-desc {font-size:.95em;color:#777;height:22px;overflow:hidden;}
+    .p-card input[type=number]{margin-top:7px;border:1px solid #eee;border-radius:5px;padding:6px 10px;width:66px;}
+    .p-card button {background:#ffd900;color:#232f3e;border:none;border-radius:6px;padding:7px 14px;font-weight:800;font-size:1em;cursor:pointer;margin-top:11px;}
+    .cart-fab {
+      position:fixed;bottom:26px;right:28px;background:#ffd900;
+      color:#232f3e;border:none;width:54px;height:54px;border-radius:50%;font-size:2em;
+      box-shadow:0 7px 32px #0003;z-index:999;cursor:pointer;display:flex;align-items:center;justify-content:center;
+    }
+    .cart-pop {position:fixed;right:22px;bottom:90px;background:#fff;color:#222;box-shadow:0 5px 40px #0003;padding:21px 20px 17px 20px;border-radius:14px;min-width:270px;max-width:95vw;z-index:999;}
+    .cart-pop h3 {margin:0 0 8px 0;}
+    .cart-it {margin-bottom:7px;}
+    .cart-it span {font-weight:700;}
+    .checkout-btn {width:100%;background:#ffd900;color:#1b2435;font-weight:800;padding:10px 0;border:none;border-radius:6px;font-size:1.08em;margin:11px 0 6px 0;}
+    .empty-cart {color:#aaa;margin:14px 0;}
+    .close-cart {position:absolute;right:11px;top:10px;font-size:1.4em;cursor:pointer;color:#aaa;}
+    @media(max-width:700px){.grid{justify-content:center;}.main{padding-top:18px;}}
+    @media(max-width:540px){
+      .p-card{max-width:97vw;}
+      .brand{font-size:1.36em;}
+      nav{font-size:1em;}
+      .main{padding-top:7px;}
     }
   </style>
 </head>
 <body>
   <header>
-    <h1 class="site-title">🛒 WinGo Shopping</h1>
-    <nav id="categories"></nav>
+    <div class="brand">WinGo Mall</div>
+    <nav id="cat-nav"></nav>
   </header>
-  <div class="main">
-    <div id="products"></div>
-  </div>
-  <div id="cartBox" class="cart-box" style="display:none;">
-    <div class="cart-title">🛒 Cart</div>
-    <div class="cart-items" id="cartItems"></div>
-    <div><b>Total: ₹<span id="cartTotal">0</span></b></div>
-    <button class="checkout-btn" onclick="checkout()">Checkout</button>
-    <button style="margin-top:4px;font-size:.92em;" onclick="clearCart()">Clear Cart</button>
-    <div id="cartMsg"></div>
-  </div>
-  <script>
-    // === DEMO DATA ===
-    const CATEGORIES = [
-      { name:"Electronics", id:"electronics" },
-      { name:"Fashion", id:"fashion" },
-      { name:"Toys", id:"toys" },
-      { name:"Home", id:"home" },
-      { name:"WinGo Points", id:"points" }
-    ];
-    const PRODUCTS = {
-      electronics: [
-        { id:"e1", title:"Earphones", price:399, img:"https://cdn.pixabay.com/photo/2016/03/31/19/32/auriculares-1294463_1280.png" },
-        { id:"e2", title:"Smartwatch", price:1699, img:"https://cdn.pixabay.com/photo/2017/01/13/12/39/wrist-watch-1972996_1280.png" },
-        { id:"e3", title:"Bluetooth Speaker", price:750, img:"https://cdn.pixabay.com/photo/2013/07/12/17/00/apple-153026_1280.png" },
-        { id:"e4", title:"Powerbank", price:900, img:"https://cdn.pixabay.com/photo/2012/04/13/00/22/battery-31502_1280.png" }
-      ],
-      fashion: [
-        { id:"f1", title:"T-shirt", price:299, img:"https://cdn.pixabay.com/photo/2016/03/31/19/03/t-shirt-1294747_1280.png" },
-        { id:"f2", title:"Sneakers", price:999, img:"https://cdn.pixabay.com/photo/2014/12/21/23/40/shoes-578766_1280.png" },
-        { id:"f3", title:"Wallet", price:399, img:"https://cdn.pixabay.com/photo/2018/02/21/15/06/leather-3170784_1280.png" },
-        { id:"f4", title:"Sunglasses", price:699, img:"https://cdn.pixabay.com/photo/2017/01/13/12/11/icon-1970472_1280.png" }
-      ],
-      toys: [
-        { id:"t1", title:"Toy Car", price:129, img:"https://cdn.pixabay.com/photo/2014/04/02/16/16/car-308264_1280.png" },
-        { id:"t2", title:"Building Blocks", price:179, img:"https://cdn.pixabay.com/photo/2013/07/12/16/44/lego-151645_1280.png" },
-        { id:"t3", title:"Soft Teddy", price:249, img:"https://cdn.pixabay.com/photo/2016/03/31/19/07/teddy-bear-1294475_1280.png" },
-        { id:"t4", title:"Puzzle Set", price:119, img:"https://cdn.pixabay.com/photo/2013/07/12/12/58/puzzle-146067_1280.png" }
-      ],
-      home: [
-        { id:"h1", title:"Table Lamp", price:329, img:"https://cdn.pixabay.com/photo/2013/07/12/19/26/table-lamp-154006_1280.png" },
-        { id:"h2", title:"Wall Clock", price:249, img:"https://cdn.pixabay.com/photo/2012/04/10/23/09/clock-26226_1280.png" },
-        { id:"h3", title:"Water Bottle", price:119, img:"https://cdn.pixabay.com/photo/2016/03/31/18/48/bottle-1294740_1280.png" },
-        { id:"h4", title:"Planter", price:180, img:"https://cdn.pixabay.com/photo/2016/03/31/18/51/pot-1294745_1280.png" }
-      ],
-      points: [
-        { id:"p1", title:"WinGo Points (Custom quantity)", price:1, img:"https://cdn.pixabay.com/photo/2017/06/02/16/24/coins-2365680_1280.png", isPoints:true }
-      ]
-    };
+  <div class="main" id="main"></div>
+  <button class="cart-fab" onclick="showCart()">
+    🛒
+    <span id="cart-badge" style="position:absolute;bottom:8px;right:12px;min-width:21px;background:#ffb900;color:#232f3e;font-weight:900;font-size:.93em;border-radius:10px;padding:0 6px;">0</span>
+  </button>
+  <div id="cart-popover" style="display:none;"></div>
+<script>
+// Demo data, add as many images/products/categories as you like!
+const PRODUCTS = {
+  "Electronics":[
+    {id:"e1",title:"Wireless Earbuds", img:"https://m.media-amazon.com/images/I/51dJQia4bBL._SL1500_.jpg", price:1099, desc:"Deep bass, 20hr backup"},
+    {id:"e2",title:"Bluetooth Speaker", img:"https://m.media-amazon.com/images/I/81aBldkrtKL._SL1500_.jpg", price:899, desc:"Portable 10W, USB/AUX"},
+    {id:"e3",title:"Powerbank 10000mAh", img:"https://m.media-amazon.com/images/I/61kWB+uzR2L._SL1500_.jpg", price:1299, desc:"2 output, fast charge"},
+    {id:"e4",title:"LED Ring Light", img:"https://m.media-amazon.com/images/I/51Y23Lh6FrL._SL1200_.jpg", price:599, desc:"Remote selfie ring"},
+  ],
+  "Fashion":[
+    {id:"f1",title:"Cotton T-shirt", img:"https://m.media-amazon.com/images/I/61cU5ZC0L4L._SL1500_.jpg", price:349, desc:"Available: M,L,XL"},
+    {id:"f2",title:"Analog Watch", img:"https://m.media-amazon.com/images/I/71dwTw1vDSL._UL1500_.jpg", price:499, desc:"Trendy, Unisex"},
+    {id:"f3",title:"Sneakers", img:"https://m.media-amazon.com/images/I/61vU1i2tCrL._SL1500_.jpg", price:899, desc:"Sizes: 7-11"},
+    {id:"f4",title:"Sunglasses", img:"https://m.media-amazon.com/images/I/71TKZv9A9zL._UL1500_.jpg", price:349, desc:"UV400, stylish"},
+  ],
+  "Toys":[
+    {id:"t1",title:"Toy Car", img:"https://m.media-amazon.com/images/I/61eMy9quZtL._SL1200_.jpg", price:129, desc:"Friction, 1:36 scale"},
+    {id:"t2",title:"Blocks Set", img:"https://m.media-amazon.com/images/I/91-lb7-v18L._SL1500_.jpg", price:220, desc:"110 pieces, DIY"},
+    {id:"t3",title:"Dancing Robot", img:"https://m.media-amazon.com/images/I/61guTTHA5CL._SL1361_.jpg", price:339, desc:"Sound, light"},
+    {id:"t4",title:"Teddy Bear", img:"https://m.media-amazon.com/images/I/71XnG2zpSJL._SL1500_.jpg", price:390, desc:"Soft, 40cm"}
+  ],
+  "Home":[
+    {id:"h1",title:"Steel Flask", img:"https://m.media-amazon.com/images/I/61OZQ4I9vHL._SL1500_.jpg", price:319, desc:"750ml, leak proof"},
+    {id:"h2",title:"Table Lamp", img:"https://m.media-amazon.com/images/I/616K219GrhL._SL1500_.jpg", price:379, desc:"LED, touch style"},
+    {id:"h3",title:"Cushion Cover", img:"https://m.media-amazon.com/images/I/71ktYa6mODL._SL1500_.jpg", price:170, desc:"Set of 2, size: 16x16"},
+    {id:"h4",title:"Wall Clock", img:"https://m.media-amazon.com/images/I/81efyG7t5hL._SL1500_.jpg", price:249, desc:"Silent sweep, 12in"}
+  ],
+  "WinGo Points":[
+    {id:"wp1", title:"WinGo Points", img:"https://cdn.pixabay.com/photo/2017/06/02/16/24/coins-2365680_1280.png", price:1, desc:"Custom quantity, instantly updates game!"}
+  ]
+};
+const CATEGORIES = Object.keys(PRODUCTS);
 
-    let currentCat = CATEGORIES[0].id;
-    let cart = [];
+let currentCat = CATEGORIES[0];
+let cart = [];
 
-    // === CATEGORY NAV ===
-    function renderCategories(){
-      const nav = document.getElementById('categories');
-      nav.innerHTML = "";
-      CATEGORIES.forEach(cat=>{
-        const btn = document.createElement('button');
-        btn.textContent = cat.name;
-        btn.className = cat.id===currentCat ? "active":"";
-        btn.onclick = ()=>{currentCat=cat.id;renderProducts();};
-        nav.appendChild(btn);
-      });
-    }
-
-    // === PRODUCTS GRID ===
-    function renderProducts(){
-      const gridDiv = document.getElementById('products');
-      gridDiv.innerHTML = `<div class="prod-grid" id="prodGrid"></div>`;
-      const prodGrid = document.getElementById("prodGrid");
-      PRODUCTS[currentCat].forEach(prod=>{
-        const d = document.createElement("div");
-        d.className = "card";
-        d.innerHTML = `<img src="${prod.img}" alt="">
-          <div class="prod-title">${prod.title}</div>
-          <div class="prod-price">
-            ${prod.isPoints? '' : '₹'}${prod.isPoints?'':prod.price} 
-            ${prod.isPoints?'Per Point' : ''}
-          </div>
-          ${prod.isPoints?`
-            <input type="number" id="pointsQty" min="1" value="100" style="width:100%;padding:7px;margin-top:7px;margin-bottom:4px;">
-            <button onclick="addPointsToCart('${prod.id}')">Add to Cart</button>
-          `:`
-            <button onclick="addToCart('${prod.id}')">Add to Cart</button>
-          `}
-        `;
-        prodGrid.appendChild(d);
-      });
-    }
-
-    // === CART ===
-    function showCart(){
-      document.getElementById('cartBox').style.display = "block";
-      renderCart();
-    }
-    function hideCart(){
-      document.getElementById('cartBox').style.display = "none";
-    }
-    function addToCart(prodId){
-      const prod = [].concat(...Object.values(PRODUCTS)).find(p=>p.id===prodId);
-      const idx = cart.findIndex(c=>c.id===prodId);
-      if(idx>-1) cart[idx].qty++;
-      else cart.push({...prod, qty:1});
-      showCart();
-    }
-    function addPointsToCart(prodId){
-      const qty = parseInt(document.getElementById('pointsQty').value,10);
-      if(isNaN(qty)||qty<1) return alert('Please enter valid points!');
-      const prod = PRODUCTS.points[0];
-      const idx = cart.findIndex(c=>c.id===prodId);
-      if(idx>-1) cart[idx].qty+=qty;
-      else cart.push({...prod, qty});
-      showCart();
-    }
-    function clearCart(){
-      cart=[];renderCart();hideCart();
-    }
-    function renderCart(){
-      const itemsDiv = document.getElementById('cartItems');
-      const totalSpan = document.getElementById('cartTotal');
-      itemsDiv.innerHTML = '';
-      let total = 0;
-      cart.forEach(item=>{
-        let line = "";
-        if(item.isPoints){
-          line = `<div>Points: <b>${item.qty}</b> x 1 = <b>${item.qty}</b></div>`;
-          total += item.qty;
-        }else{
-          line = `<div>${item.title} <b>x${item.qty}</b> = ₹${item.price*item.qty}</div>`;
-          total += item.price*item.qty;
-        }
-        itemsDiv.innerHTML += line;
-      });
-      totalSpan.textContent = total;
-    }
-
-    // === CHECKOUT ===
-    function checkout(){
-      const cartMsg = document.getElementById('cartMsg');
-      if(cart.length===0){cartMsg.textContent='Cart is empty.';cartMsg.className="error";return;}
-      // Simulate checkout for non-points
-      let userToken = localStorage.getItem('token');
-      if(!userToken){
-        cartMsg.textContent = "Please log in on user site before checkout.";
-        cartMsg.className = "error"; return;
+function renderCategories(){
+  const nav = document.getElementById('cat-nav');
+  nav.innerHTML = "";
+  CATEGORIES.forEach(cat=>{
+    const btn = document.createElement('button');
+    btn.textContent = cat;
+    btn.className = (cat === currentCat) ? "active" : "";
+    btn.onclick = () => {currentCat=cat;renderProducts();}
+    nav.appendChild(btn);
+  });
+}
+function renderProducts(){
+  const main = document.getElementById('main');
+  main.innerHTML = `<div class="product-cat"><h2>${currentCat}</h2><div class="grid" id="grid"></div></div>`;
+  const grid = document.getElementById('grid');
+  PRODUCTS[currentCat].forEach(p=>{
+    const d = document.createElement('div');
+    d.className = "p-card";
+    d.innerHTML = `<img src="${p.img}" alt="">
+      <div class="p-title">${p.title}</div>
+      <div class="p-price">${currentCat==="WinGo Points"?"₹1/pt":"₹"+p.price}</div>
+      <div class="p-desc">${p.desc||""}</div>
+      ${currentCat==="WinGo Points"
+        ?'<input type="number" id="qtyIn" min="1" value="100" style="margin-bottom:6px;"><button onclick="addPointsToCart()">Add to Cart</button>'
+        :'<button onclick="addToCart(\''+p.id+'\')">Add to Cart</button>'
       }
-      // If buying points, call game API instantly (simulate, demo call)
-      const pointsItem = cart.find(i=>i.isPoints);
-      if(pointsItem){
-        fetch("https://wingo-backend-nqk5.onrender.com/api/users/wallet/recharge",{
-          method:"POST",
-          headers:{ "Authorization":"Bearer "+userToken, "Content-Type":"application/json" },
-          body: JSON.stringify({ amount: pointsItem.qty })
-        }).then(r=>r.json()).then(data=>{
-          if(data && !data.message){
-            cartMsg.textContent = "Order Success & Points Added!";
-            cartMsg.className = "success";
-            cart = cart.filter(i=>!i.isPoints);
-            renderCart();
-          }else{
-            cartMsg.textContent = data.message || "API failure for points!";
-            cartMsg.className = "error";
-          }
-        }).catch(e=>{
-          cartMsg.textContent = "Error reaching API!";
-          cartMsg.className = "error";
-        });
-      }
-      // Success for other product orders (demo only)
-      if(cart.find(i=>!i.isPoints)){
-        cartMsg.textContent = "Order placed for " + cart.filter(i=>!i.isPoints).length + " product(s)!";
-        cartMsg.className = "success";
-        cart = cart.filter(i=>i.isPoints);
-        renderCart();
-      }
-    }
+    `;
+    grid.appendChild(d);
+  });
+}
 
-    // INITIAL RENDER
-    renderCategories();renderProducts();
+function addToCart(id){
+  // normal product
+  let p = PRODUCTS[currentCat].find(prod=>prod.id===id);
+  if(!p) return;
+  let idx = cart.findIndex(i=>i.id===id);
+  if(idx>-1) cart[idx].qty += 1;
+  else cart.push({...p, qty:1});
+  updateCartBadge();
+}
+function addPointsToCart(){
+  const qty = parseInt(document.getElementById('qtyIn').value,10)||0;
+  if(qty<1){ alert("Enter points."); return;}
+  let item = cart.find(i=>i.id==='wp1');
+  if(item) item.qty+=qty;
+  else cart.push({...PRODUCTS["WinGo Points"][0], qty});
+  updateCartBadge();
+}
 
-    // Show cart icon always unless empty
-    document.body.onclick = function(e){
-      if(e.target.className.includes("cart-box")) return;
-      if(e.target.closest && e.target.closest(".cart-box")) return;
-      if(e.target.tagName==="BUTTON" && e.target.textContent.includes("Cart")) showCart();
-      else if(e.target.className==="cart-title") showCart();
-      else /* hideCart(); */
-      return;
-    };
-    // Floating cart preview
-    renderCart();
-  </script>
+function updateCartBadge(){
+  const sum = cart.reduce((a,b)=>a+b.qty,0);
+  document.getElementById('cart-badge').textContent = sum;
+}
+function showCart(){
+  const pop = document.getElementById('cart-popover');
+  pop.style.display="block";
+  let total = 0;
+  pop.innerHTML = `<span class="close-cart" onclick="hideCart()">×</span><h3>Your Cart</h3>`;
+  cart.forEach(item=>{
+    const line = item.id==="wp1"
+      ? `<div class="cart-it"><span>Points:</span> ${item.qty} x ₹1 = ₹${item.qty}</div>`
+      : `<div class="cart-it"><span>${item.title}:</span> x${item.qty} = ₹${item.price*item.qty}</div>`;
+    pop.innerHTML += line;
+    total += (item.price*item.qty);
+  });
+  if(!cart.length) pop.innerHTML += `<div class="empty-cart">Cart is empty.</div>`;
+  pop.innerHTML += `<div><b>Total: ₹${total}</b></div><button class="checkout-btn" onclick="checkout()">Checkout</button>`;
+}
+function hideCart(){ document.getElementById('cart-popover').style.display="none"; }
+function checkout(){
+  const pop = document.getElementById('cart-popover');
+  if(cart.length==0){ pop.innerHTML = '<div class="empty-cart">Nothing to checkout!</div>'; return;}
+  // Demo: instantly "order success" all physical, call API for WinGo points
+  const userToken = localStorage.getItem('token');
+  if(cart.find(i=>i.id==="wp1") && !userToken){
+    pop.innerHTML += `<div style="color:#e24f4f;margin-top:14px;">Login required to add points!</div>`;
+    return;
+  }
+  if(cart.find(i=>i.id==="wp1")){
+    const points = cart.find(i=>i.id==="wp1").qty;
+    fetch("https://wingo-backend-nqk5.onrender.com/api/users/wallet/recharge",{
+      method:"POST",
+      headers:{"Authorization":"Bearer "+userToken,"Content-Type":"application/json"},
+      body:JSON.stringify({amount:points})
+    }).then(r=>r.json()).then(data=>{
+      if(!data.message) pop.innerHTML += `<div style="color:#19ae5f;margin-top:10px;">+${points} points instantly added!</div>`;
+      else pop.innerHTML += `<div style="color:#e24f4f;margin-top:10px;">${data.message}</div>`;
+      cart = cart.filter(i=>i.id!=="wp1"); updateCartBadge();
+    });
+  }
+  pop.innerHTML += '<div style="color:#19ae5f;margin-top:12px;">Order for physical products simulated (delivery soon)!</div>';
+  cart=cart.filter(i=>i.id==="wp1"); updateCartBadge();
+}
+renderCategories(); renderProducts();
+updateCartBadge();
+</script>
 </body>
 </html>
