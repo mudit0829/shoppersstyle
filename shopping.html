@@ -1,93 +1,234 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>WorldCrossMarket.ai</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <title>Shoppersstyle.in</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet" />
   <style>
     body {
-      font-family: 'Inter', sans-serif;
-      margin: 0; background: #f8f9fa;
-      color: #222;
+      font-family: 'Inter', Arial, sans-serif;
+      margin: 0;
+      background: #fafafa;
+      color: #212121;
     }
     header {
-      display: flex; justify-content: space-between; align-items: center;
-      background: #fff; padding: 12px 24px; box-shadow: 0 1px 8px #eee;
-      position: sticky; top: 0; z-index: 1000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #fff;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      padding: 14px 28px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
-    .site-name { font-weight: 800; font-size: 1.6rem; letter-spacing: 1px; color: #0070f3; }
-    .header-icons { display: flex; gap: 18px; align-items: center; }
+    .site-name {
+      font-size: 1.7rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: #1a73e8;
+      cursor: default;
+    }
+    .header-icons {
+      display: flex;
+      gap: 18px;
+    }
     .header-icons span {
-      cursor: pointer; background: #efefef; border-radius: 50%; width: 36px; height: 36px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.3rem; transition: background 0.2s;
+      background: #f0f0f0;
+      border-radius: 50%;
+      cursor: pointer;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      transition: background 0.25s ease;
+      color: #333;
     }
-    .header-icons span:hover { background: #ddeafb; }
+    .header-icons span:hover {
+      background: #e3f2fd;
+      color: #1a73e8;
+    }
     .banner {
-      max-width: 1100px; margin: 24px auto 0; position: relative; border-radius: 12px; overflow: hidden;
-      box-shadow: 0 2px 12px #e1e1e1;
+      max-width: 1140px;
+      margin: 28px auto 0;
+      position: relative;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 3px 15px rgba(26, 115, 232, 0.15);
+      cursor: pointer;
     }
-    .carousel-slide { display: none; width: 100%; height: 260px; cursor: pointer; transition: 0.5s; }
-    .carousel-slide.active { display: block; }
+    .carousel-slide {
+      display: none;
+      height: 280px;
+      width: 100%;
+      object-fit: cover;
+      border-radius: 14px;
+      user-select: none;
+    }
+    .carousel-slide.active {
+      display: block;
+    }
     .carousel-dots {
-      display: flex; justify-content: center; gap: 8px; margin-top: -28px; margin-bottom: 18px;
+      display: flex;
+      justify-content: center;
+      margin: -34px 0 18px;
+      gap: 10px;
     }
     .carousel-dot {
-      width: 11px; height: 11px; border-radius: 50%; background: #ddd; cursor: pointer;
-      border: none; outline: none;
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      background: #cfd8dc;
+      border: none;
+      cursor: pointer;
+      outline: none;
+      transition: background 0.3s ease;
     }
-    .carousel-dot.active { background: #118cff; }
+    .carousel-dot.active {
+      background: #1a73e8;
+      box-shadow: 0 0 6px #1a73e8;
+    }
     .categories {
-      display: grid; grid-template-columns: repeat(4,1fr); gap: 22px; max-width: 1100px; margin: 30px auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 28px;
+      max-width: 1140px;
+      margin: 36px auto;
     }
     .category-block {
-      background: #fff; border-radius: 12px; box-shadow: 0 1px 8px #eee;
-      text-align: center; padding: 30px 14px 22px; font-size: 1.1rem; font-weight: 700;
-      cursor: pointer; transition: box-shadow 0.2s, background 0.2s;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 1px 7px rgb(0 0 0 / 0.06);
+      font-size: 1.15rem;
+      font-weight: 600;
+      text-align: center;
+      padding: 38px 18px 26px;
+      color: #374151;
+      cursor: pointer;
+      transition: box-shadow 0.3s ease, background-color 0.3s ease;
+      user-select: none;
     }
-    .category-block:hover { box-shadow: 0 8px 24px #cadfff; background: #eef6fe; }
-    .category-icon { font-size: 2.1rem; opacity: 0.8; margin-bottom: 12px; }
-    .marquee-wrap { max-width: 1100px; margin: 20px auto; overflow: hidden; }
+    .category-block:hover {
+      box-shadow: 0 10px 30px rgb(26 115 232 / 0.2);
+      background: #e8f0fe;
+      color: #1a73e8;
+    }
+    .category-icon {
+      font-size: 2.2rem;
+      margin-bottom: 14px;
+      color: #1a73e8;
+      user-select: none;
+    }
+    .marquee-wrap {
+      max-width: 1140px;
+      margin: 20px auto;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding-bottom: 12px;
+      -webkit-overflow-scrolling: touch;
+    }
     .marquee-track {
-      display: flex; gap: 28px; animation: marqueeAnim 22s linear infinite;
+      display: flex;
+      gap: 28px;
+      min-width: max-content;
+      user-select: none;
     }
     .product-card {
-      min-width: 180px; background: #fff; border-radius: 10px; box-shadow: 0 1px 6px #eee;
-      padding: 12px; text-align: center; transition: box-shadow 0.2s;
+      min-width: 180px;
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 1px 7px rgb(0 0 0 / 0.1);
+      padding: 12px;
+      text-align: center;
+      transition: box-shadow 0.25s ease;
     }
-    .product-card img { width: 100%; height: 105px; object-fit: cover; border-radius: 7px; }
-    .product-title { font-size: .98rem; font-weight: 600; margin: 4px 0 2px;}
-    .product-price { color: #009c3b; font-weight: 700; margin-bottom: 4px;}
-    @keyframes marqueeAnim {
-      0% { transform: translateX(0);}
-      100% { transform: translateX(-48%);}
+    .product-card:hover {
+      box-shadow: 0 8px 28px rgb(26 115 232 / 0.3);
+    }
+    .product-card img {
+      width: 100%;
+      height: 110px;
+      object-fit: cover;
+      border-radius: 8px;
+      user-select: none;
+    }
+    .product-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin: 10px 0 6px;
+      color: #111827;
+      user-select: text;
+    }
+    .product-price {
+      color: #059669;
+      font-weight: 700;
+      margin-bottom: 6px;
+      user-select: text;
     }
     footer {
-      background: #222; color: #fff; padding: 22px 0 16px;
-      display: flex; justify-content: space-between; align-items: center;
-      flex-wrap: wrap; font-size: 1rem; margin-top: 44px;
+      background: #1f2937;
+      color: #cbd5e1;
+      padding: 30px 0 20px;
+      font-size: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      max-width: 1140px;
+      margin: 40px auto 0;
+      border-radius: 12px;
     }
-    .footer-section { margin: 0 24px; }
-    .footer-links { display: flex; gap: 20px; }
-    .footer-links a { color: #94cafc; text-decoration: none;}
-    .footer-links a:hover { color: #ffd700; }
-    @media (max-width: 790px) {
-      .categories { grid-template-columns: 2fr 2fr; gap: 12px;}
-      .marquee-track { gap: 16px;}
+    .footer-section {
+      margin: 0 18px;
+      user-select: none;
     }
-    @media (max-width: 600px) {
-      .categories { grid-template-columns: 1fr 1fr; gap: 10px;}
-      .banner, .categories, .marquee-wrap { max-width: 98vw;}
-      header, footer { flex-direction: column; align-items: flex-start;}
-      .header-icons { margin-top: 8px;}
-      .footer-section { margin-bottom: 8px;}
+    .footer-links {
+      display: flex;
+      gap: 22px;
+      user-select: text;
+    }
+    .footer-links a {
+      color: #93c5fd;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    .footer-links a:hover {
+      color: #facc15;
+    }
+    @media (max-width: 800px) {
+      .categories {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+      }
+      .marquee-track {
+        gap: 20px;
+      }
+    }
+    @media (max-width: 520px) {
+      header,
+      footer {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .header-icons {
+        margin-top: 12px;
+      }
+      .footer-section {
+        margin-bottom: 10px;
+      }
+      .categories {
+        grid-template-columns: 1fr;
+        gap: 18px;
+      }
     }
   </style>
 </head>
 <body>
   <header>
-    <span class="site-name">WorldCrossMarket.ai</span>
+    <span class="site-name">Shoppersstyle.in</span>
     <div class="header-icons">
       <span title="Profile">&#128100;</span>
       <span title="Cart">&#128722;</span>
@@ -96,97 +237,104 @@
   </header>
 
   <div class="banner">
-    <a class="carousel-slide active" href="/product1"><img src="banner1.jpg" alt="Banner Product 1" style="width:100%; height:100%;"></a>
-    <a class="carousel-slide" href="/product2"><img src="banner2.jpg" alt="Banner Product 2" style="width:100%; height:100%;"></a>
-    <a class="carousel-slide" href="/product3"><img src="banner3.jpg" alt="Banner Product 3" style="width:100%; height:100%;"></a>
-    <a class="carousel-slide" href="/product4"><img src="banner4.jpg" alt="Banner Product 4" style="width:100%; height:100%;"></a>
+    <a href="/product1"><img class="carousel-slide active" src="https://via.placeholder.com/1140x280?text=Banner+Product+1" alt="Banner Product 1" /></a>
+    <a href="/product2"><img class="carousel-slide" src="https://via.placeholder.com/1140x280?text=Banner+Product+2" alt="Banner Product 2" /></a>
+    <a href="/product3"><img class="carousel-slide" src="https://via.placeholder.com/1140x280?text=Banner+Product+3" alt="Banner Product 3" /></a>
+    <a href="/product4"><img class="carousel-slide" src="https://via.placeholder.com/1140x280?text=Banner+Product+4" alt="Banner Product 4" /></a>
     <div class="carousel-dots"></div>
   </div>
 
   <div class="categories">
     <div class="category-block" onclick="window.location='/electronics'">
-      <div class="category-icon">&#128267;</div>
+      <span class="category-icon">&#128267;</span>
       Electronics
     </div>
     <div class="category-block" onclick="window.location='/mobile-accessories'">
-      <div class="category-icon">&#128241;</div>
+      <span class="category-icon">&#128241;</span>
       Mobile Accessories
     </div>
     <div class="category-block" onclick="window.location='/computer-accessories'">
-      <div class="category-icon">&#128187;</div>
+      <span class="category-icon">&#128187;</span>
       Computer Accessories
     </div>
     <div class="category-block" onclick="window.location='/wingo-points'">
-      <div class="category-icon">&#127942;</div>
+      <span class="category-icon">&#127942;</span>
       Wingo Points
     </div>
   </div>
 
-  <div class="marquee-wrap">
-    <div class="marquee-track" id="marquee-products">
-      <div class="product-card">
-        <img src="product1.jpg" alt="Product 1">
+  <div class="marquee-wrap" tabindex="0">
+    <div class="marquee-track" aria-label="Trending products">
+      <div class="product-card" tabindex="0">
+        <img src="https://via.placeholder.com/180x110?text=Bluetooth+Speaker" alt="Bluetooth Speaker" />
         <div class="product-title">Bluetooth Speaker</div>
         <div class="product-price">₹899</div>
       </div>
-      <div class="product-card">
-        <img src="product2.jpg" alt="Product 2">
+      <div class="product-card" tabindex="0">
+        <img src="https://via.placeholder.com/180x110?text=Mobile+Cover" alt="Mobile Cover" />
         <div class="product-title">Mobile Cover</div>
         <div class="product-price">₹499</div>
       </div>
-      <div class="product-card">
-        <img src="product3.jpg" alt="Product 3">
+      <div class="product-card" tabindex="0">
+        <img src="https://via.placeholder.com/180x110?text=Gaming+Mouse" alt="Gaming Mouse" />
         <div class="product-title">Gaming Mouse</div>
         <div class="product-price">₹1199</div>
       </div>
-      <div class="product-card">
-        <img src="product4.jpg" alt="Product 4">
+      <div class="product-card" tabindex="0">
+        <img src="https://via.placeholder.com/180x110?text=Wingo+Points+-+100" alt="Wingo Points 100" />
         <div class="product-title">Wingo Points - 100</div>
         <div class="product-price">₹100</div>
       </div>
-      <!-- Add more products as needed -->
+      <!-- Add more product cards if needed -->
     </div>
   </div>
 
   <footer>
-    <div class="footer-section">WorldCrossMarket.ai © 2025</div>
+    <div class="footer-section">Shoppersstyle.in © 2025</div>
     <div class="footer-links">
-      <a href="/privacy-policy">Privacy Policy</a>
-      <a href="/terms">Terms and Conditions</a>
-      <a href="/refunds">Refund & Return Policy</a>
-      <a href="/about">About Us</a>
+      <a href="/privacy-policy" tabindex="0">Privacy Policy</a>
+      <a href="/terms" tabindex="0">Terms and Conditions</a>
+      <a href="/refunds" tabindex="0">Refund & Return Policy</a>
+      <a href="/about" tabindex="0">About Us</a>
     </div>
   </footer>
 
   <script>
-    // Banner Carousel Logic
     const slides = document.querySelectorAll('.carousel-slide');
     const dotsContainer = document.querySelector('.carousel-dots');
     let currentSlide = 0;
 
-    function renderDots() {
+    function createDots() {
       dotsContainer.innerHTML = '';
       slides.forEach((_, idx) => {
         const dot = document.createElement('button');
-        dot.className = "carousel-dot" + (idx === currentSlide ? " active" : "");
+        dot.className = 'carousel-dot' + (idx === currentSlide ? ' active' : '');
+        dot.setAttribute('aria-label', 'Slide ' + (idx + 1));
         dot.onclick = () => showSlide(idx);
         dotsContainer.appendChild(dot);
       });
     }
-    function showSlide(idx) {
+
+    function showSlide(index) {
       slides[currentSlide].classList.remove('active');
-      currentSlide = idx;
+      currentSlide = index;
       slides[currentSlide].classList.add('active');
-      renderDots();
+      updateDots();
     }
+
+    function updateDots() {
+      const dots = document.querySelectorAll('.carousel-dot');
+      dots.forEach((dot, idx) => {
+        dot.classList.toggle('active', idx === currentSlide);
+      });
+    }
+
     function nextSlide() {
       showSlide((currentSlide + 1) % slides.length);
     }
-    setInterval(nextSlide, 3400);
-    renderDots();
 
-    // Marquee Rotation (autoplay), but swipeable on mobile (no JS needed for auto scroll)
-    // Product cards can be fetched dynamically if backend API available
+    createDots();
+    setInterval(nextSlide, 3500);
   </script>
 </body>
 </html>
