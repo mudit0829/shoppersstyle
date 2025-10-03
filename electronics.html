@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Electronics - Shoppersstyle.in</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* Same styles as homepage and main inner page—kept concise here */
+    body {
+      font-family: 'Plus Jakarta Sans', Arial, sans-serif;
+      margin: 0;
+      background: #FFFBEB;
+      color: #111827;
+    }
+    header {
+      display: flex; justify-content: space-between; align-items: center;
+      background: #fff;
+      box-shadow: 0 3px 12px rgba(30,64,175,0.15);
+      padding: 16px 32px;
+      position: sticky; top:0; z-index:100;
+    }
+    .site-name {
+      font-size: 1.8rem; font-weight: 700; letter-spacing: 1.3px; color: #1E40AF;
+      cursor: default; user-select: none;
+    }
+    .header-icons { display: flex; gap: 22px; }
+    .header-icons span {
+      background: #FBBF24; border-radius: 50%; cursor: pointer;
+      width: 44px; height: 44px; display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; color: #1E40AF; transition: background-color 0.3s ease;
+    }
+    .header-icons span:hover { background: #FDE68A; }
+
+    main {
+      max-width: 1140px; margin: 36px auto; padding: 0 24px;
+      background: #fff; border-radius: 16px; box-shadow: 0 3px 22px rgb(30 64 175 / 0.15);
+      min-height: 520px; user-select: none;
+    }
+    h1 {
+      color: #1E40AF; font-weight: 700; font-size: 2rem; margin-top: 24px; margin-bottom: 14px;
+      user-select: text;
+    }
+    .category-description {
+      margin-bottom: 30px; font-size: 1.1rem; color: #374151; user-select: text;
+    }
+    .products-grid {
+      display: grid; grid-template-columns: repeat(4,1fr); gap: 28px; margin-bottom: 40px;
+    }
+    .product-card {
+      background: #F7F9FC; border-radius: 14px;
+      padding: 18px 12px; box-shadow: 0 2px 12px rgb(30 64 175 / 0.1);
+      text-align: center; cursor: pointer; transition: box-shadow 0.3s ease;
+      user-select: none;
+    }
+    .product-card:hover {
+      box-shadow: 0 14px 48px rgb(251 191 36 / 0.4);
+    }
+    .product-card img {
+      width: 100%; height: 140px; object-fit: cover;
+      border-radius: 10px; margin-bottom: 14px;
+      transition: transform 0.3s ease; user-select: none;
+    }
+    .product-card:hover img {
+      transform: scale(1.05);
+    }
+    .product-title {
+      font-size: 1.1rem; font-weight: 700; margin-bottom: 8px;
+      color: #1E40AF; user-select: text;
+    }
+    .product-price {
+      font-size: 1rem; font-weight: 700; color: #B45309; user-select: text;
+    }
+
+    footer {
+      background: #1E40AF; color: #FEF3C7; padding: 28px 0 22px;
+      font-size: 1rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;
+      max-width: 1140px; margin: 20px auto 0; border-radius: 14px; user-select: none;
+    }
+    .footer-section { margin: 0 20px; }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a {
+      color: #FBBF24; text-decoration: none; font-weight: 600;
+      transition: color 0.3s ease;
+    }
+    .footer-links a:hover { color: #FEF3C7; }
+
+    @media (max-width: 920px) {
+      .products-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 520px) {
+      .products-grid { grid-template-columns: 1fr; }
+      header, footer { flex-direction: column; align-items: flex-start; }
+      .header-icons { margin-top: 14px; }
+      .footer-section { margin-bottom: 14px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <span class="site-name">Shoppersstyle.in</span>
+    <div class="header-icons">
+      <span title="Profile">&#128100;</span>
+      <span title="Cart">&#128722;</span>
+      <span title="Wallet">&#128179;</span>
+    </div>
+  </header>
+
+  <main>
+    <h1>Electronics</h1>
+    <p class="category-description">Explore our extensive range of electronics, featuring the latest gadgets, home appliances, and tech innovations to keep you connected and productive.</p>
+    <div class="products-grid">
+      <div class="product-card" onclick="window.location='/product/101'">
+        <img src="https://images.unsplash.com/photo-1510557880182-3eec6b2e8d89?auto=format&fit=crop&w=400&q=80" alt="Smart TV" />
+        <div class="product-title">Smart TV 55 inch</div>
+        <div class="product-price">₹44,999</div>
+      </div>
+      <div class="product-card" onclick="window.location='/product/102'">
+        <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=400&q=80" alt="Noise Cancelling Headphones" />
+        <div class="product-title">Noise Cancelling Headphones</div>
+        <div class="product-price">₹9,899</div>
+      </div>
+      <div class="product-card" onclick="window.location='/product/103'">
+        <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=400&q=80" alt="Smart Home Speaker" />
+        <div class="product-title">Smart Home Speaker</div>
+        <div class="product-price">₹3,499</div>
+      </div>
+      <div class="product-card" onclick="window.location='/product/104'">
+        <img src="https://images.unsplash.com/photo-1496180727794-817822f65950?auto=format&fit=crop&w=400&q=80" alt="Digital Camera" />
+        <div class="product-title">Digital Camera</div>
+        <div class="product-price">₹24,499</div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-section">Shoppersstyle.in © 2025</div>
+    <div class="footer-links">
+      <a href="/privacy-policy">Privacy Policy</a>
+      <a href="/terms">Terms and Conditions</a>
+      <a href="/refunds">Refund & Return Policy</a>
+      <a href="/about">About Us</a>
+    </div>
+  </footer>
+</body>
+</html>
