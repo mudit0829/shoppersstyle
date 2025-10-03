@@ -4,13 +4,16 @@
   <meta charset="UTF-8" />
   <title>Shoppersstyle.in</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet" />
+  
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+  
   <style>
     body {
-      font-family: 'Inter', Arial, sans-serif;
+      font-family: 'Poppins', Arial, sans-serif;
       margin: 0;
-      background: #fafafa;
-      color: #212121;
+      background: #F9FAFB;
+      color: #111827;
     }
     header {
       display: flex;
@@ -27,7 +30,7 @@
       font-size: 1.7rem;
       font-weight: 700;
       letter-spacing: 1px;
-      color: #1a73e8;
+      color: #2563EB;
       cursor: default;
     }
     .header-icons {
@@ -49,7 +52,7 @@
     }
     .header-icons span:hover {
       background: #e3f2fd;
-      color: #1a73e8;
+      color: #2563EB;
     }
     .banner {
       max-width: 1140px;
@@ -57,7 +60,7 @@
       position: relative;
       border-radius: 14px;
       overflow: hidden;
-      box-shadow: 0 3px 15px rgba(26, 115, 232, 0.15);
+      box-shadow: 0 20px 35px rgba(37, 99, 235, 0.2);
       cursor: pointer;
     }
     .carousel-slide {
@@ -88,8 +91,8 @@
       transition: background 0.3s ease;
     }
     .carousel-dot.active {
-      background: #1a73e8;
-      box-shadow: 0 0 6px #1a73e8;
+      background: #2563EB;
+      box-shadow: 0 0 6px #2563EB;
     }
     .categories {
       display: grid;
@@ -112,14 +115,14 @@
       user-select: none;
     }
     .category-block:hover {
-      box-shadow: 0 10px 30px rgb(26 115 232 / 0.2);
+      box-shadow: 0 10px 30px rgb(37 99 235 / 0.2);
       background: #e8f0fe;
-      color: #1a73e8;
+      color: #2563EB;
     }
     .category-icon {
       font-size: 2.2rem;
       margin-bottom: 14px;
-      color: #1a73e8;
+      color: #2563EB;
       user-select: none;
     }
     .marquee-wrap {
@@ -146,7 +149,7 @@
       transition: box-shadow 0.25s ease;
     }
     .product-card:hover {
-      box-shadow: 0 8px 28px rgb(26 115 232 / 0.3);
+      box-shadow: 0 8px 28px rgb(37 99 235 / 0.3);
     }
     .product-card img {
       width: 100%;
@@ -237,10 +240,10 @@
   </header>
 
   <div class="banner">
-    <a href="/product1"><img class="carousel-slide active" src="https://via.placeholder.com/1140x280?text=Banner+Product+1" alt="Banner Product 1" /></a>
-    <a href="/product2"><img class="carousel-slide" src="https://via.placeholder.com/1140x280?text=Banner+Product+2" alt="Banner Product 2" /></a>
-    <a href="/product3"><img class="carousel-slide" src="https://via.placeholder.com/1140x280?text=Banner+Product+3" alt="Banner Product 3" /></a>
-    <a href="/product4"><img class="carousel-slide" src="https://via.placeholder.com/1140x280?text=Banner+Product+4" alt="Banner Product 4" /></a>
+    <a href="/product1"><img class="carousel-slide active" src="https://images.unsplash.com/photo-1510557880182-3eec6b2e8d89?auto=format&fit=crop&w=1140&q=80" alt="Electronics Banner" /></a>
+    <a href="/product2"><img class="carousel-slide" src="https://images.unsplash.com/photo-1527434002151-fb1b7b12e8d8?auto=format&fit=crop&w=1140&q=80" alt="Mobile Accessories Banner" /></a>
+    <a href="/product3"><img class="carousel-slide" src="https://images.unsplash.com/photo-1509395176047-4a66953fd231?auto=format&fit=crop&w=1140&q=80" alt="Computer Accessories Banner" /></a>
+    <a href="/product4"><img class="carousel-slide" src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1140&q=80" alt="Rewards Banner" /></a>
     <div class="carousel-dots"></div>
   </div>
 
@@ -266,26 +269,25 @@
   <div class="marquee-wrap" tabindex="0">
     <div class="marquee-track" aria-label="Trending products">
       <div class="product-card" tabindex="0">
-        <img src="https://via.placeholder.com/180x110?text=Bluetooth+Speaker" alt="Bluetooth Speaker" />
+        <img src="https://images.unsplash.com/photo-1587825140500-d6c075e22850?auto=format&fit=crop&w=200&q=80" alt="Bluetooth Speaker" />
         <div class="product-title">Bluetooth Speaker</div>
         <div class="product-price">₹899</div>
       </div>
       <div class="product-card" tabindex="0">
-        <img src="https://via.placeholder.com/180x110?text=Mobile+Cover" alt="Mobile Cover" />
+        <img src="https://images.unsplash.com/photo-1527434255787-b4480778eea4?auto=format&fit=crop&w=200&q=80" alt="Mobile Cover" />
         <div class="product-title">Mobile Cover</div>
         <div class="product-price">₹499</div>
       </div>
       <div class="product-card" tabindex="0">
-        <img src="https://via.placeholder.com/180x110?text=Gaming+Mouse" alt="Gaming Mouse" />
+        <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=200&q=80" alt="Gaming Mouse" />
         <div class="product-title">Gaming Mouse</div>
         <div class="product-price">₹1199</div>
       </div>
       <div class="product-card" tabindex="0">
-        <img src="https://via.placeholder.com/180x110?text=Wingo+Points+-+100" alt="Wingo Points 100" />
+        <img src="https://cdn-icons-png.flaticon.com/512/189/189689.png" alt="Wingo Points 100" />
         <div class="product-title">Wingo Points - 100</div>
         <div class="product-price">₹100</div>
       </div>
-      <!-- Add more product cards if needed -->
     </div>
   </div>
 
